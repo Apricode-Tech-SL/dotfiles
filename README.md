@@ -4,15 +4,16 @@ This is a generic dotfiles repository to speed up the setup configuration of you
 
 ## Requirements
 
-- [] git installed
-- [] Your apricodetech.com account created and access to Apricode team in github
-- [] 11teamsports.com account created and access to bitbucket
+- [ ] git installed
+- [ ] Your apricodetech.com account created and access to Apricode team in github
+- [ ] 11teamsports.com account created and access to bitbucket
 
 ## Setup
 
 ### Private git repository SCENARIO
 
-> ⚠️ This step could be automated with a public github repository
+> [!WARNING]
+> This step could be automated with a public github repository
 
 Start by configuring your git credentials and ssh key for Github
 
@@ -26,6 +27,7 @@ git config --global user.email "monkey.d.luffy@strawhatpirates.eb"
 ```bash
 mkdir ~/.ssh
 ssh-keygen -t ed25519 -C "monkey.d.luffy@strawhatpirates.eb"
+eval $(ssh-agent)
 ```
 
 Copy the generated public ssh key into your [github account](https://github.com/settings/ssh/new)
@@ -40,7 +42,7 @@ Clone the repository and run
 bash dotfiles/src/os/setup.sh
 ```
 
-### Public git repository
+### Public git repository SCENARIO
 
 ```bash
 bash -c "$(curl -LsS https://raw.github.com/Apricode-Tech-SL/dotfiles/main/src/os/setup.sh)"
@@ -65,4 +67,7 @@ Just follow the shell instructions
   - nx   
 
 ## Override user specific settings using `.local` configurations
+
+- https://support.atlassian.com/bitbucket-cloud/docs/set-up-personal-ssh-keys-on-macos/
+- add new key https://bitbucket.org/account/settings/ssh-keys/
 
