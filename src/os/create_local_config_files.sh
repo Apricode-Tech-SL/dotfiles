@@ -45,8 +45,8 @@ create_gitconfig_local() {
         printf "%s\n" \
 "[user]
 
-    name =
-    email =
+    name = $1
+    email = $2
 "
     fi
 
@@ -62,7 +62,7 @@ main() {
     print_in_purple "\n • Create local config files\n\n"
 
     create_bash_local
-    create_gitconfig_local
+    create_gitconfig_local $GIT_NAME $GITHUB_EMAIL
 }
 
 main

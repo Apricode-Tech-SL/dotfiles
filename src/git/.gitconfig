@@ -1,0 +1,64 @@
+[alias]
+  fixup = "!git log -n 50 --pretty=format:'%h %ad %an%x09%s' --date=format:'%Y-%m-%d %H:%M:%S' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+  slog  = "!git log --pretty=format:'%h%x09%an%x09%ad%x09%s'"
+
+[help]
+
+    # If a command is mistyped, make Git automatically
+    # run the command it thinks the user wanted to type.
+
+    autoCorrect = immediate
+	
+[init]
+	defaultBranch = main
+
+[pretty]
+
+    custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)"
+    #                     │        │            │            │             └─ author name
+    #                     │        │            │            └─ message
+    #                     │        │            └─ date (relative)
+    #                     │        └─ decorations (branch, heads or tags)
+    #                     └─ hash (abbreviated)
+
+[color "branch"]
+
+    current = green bold
+    local = green
+    remote = yellow
+
+[color "diff"]
+
+    frag = magenta
+    meta = yellow
+
+    new = green
+    old = red
+
+    newMoved = cyan
+    oldMoved = blue
+
+[color "status"]
+
+    added = green reverse
+    changed = yellow reverse
+    untracked = red reverse
+
+
+[push]
+
+    # Make `git push` automatically push relevant
+    # annotated tags when pushing branches out.
+
+    followTags = true
+
+[rebase]
+
+    # Automatically force-update any branches that
+    # point to commits that are being rebased.
+
+    updateRefs = true
+	autosquash = true
+
+[include]
+	path = ~/.gitconfig.local
