@@ -9,9 +9,6 @@ declare -r DOTFILES_UTILS_URI="https://raw.githubusercontent.com/$GITHUB_REPOSIT
 declare dotfilesDirectory="$HOME/projects/dotfiles"
 declare skipQuestions=false
 
-print_logo
-printf "Starting dotfiles setup"
-
 
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
@@ -253,6 +250,11 @@ extract() {
 # ----------------------------------------------------------------------
 # | Main                                                               |
 # ----------------------------------------------------------------------
+
+
+print_logo
+printf "Starting dotfiles setup"
+
 
 cd "$(dirname "${BASH_SOURCE[0]}")" \
     || printf "  [✖] Error checking directory\n" && exit 1
