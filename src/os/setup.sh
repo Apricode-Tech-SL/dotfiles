@@ -20,6 +20,7 @@ print_logo() {
     BLUE='\033[38;2;147;247;238m'  # #93F7EE
     RESET='\033[0m'                # Reset to default terminal color
 
+    echo -e ""
     echo -e "${ORANGE}                                                                    @@@@@@@@@@@@@                      @@@@@"
     echo -e "                                                            @@@@@@@@@@@@@@@@@@@@@@@@@@               @@@@@@@@@"
     echo -e "                                                        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@           @@@@@@@@@@"
@@ -102,6 +103,7 @@ print_logo() {
     echo -e "                                                                                                            @@@@       @@@@@         @@@@@           @@@@@@@@@@@@@"
     echo -e "                                                                                                            @@@@       @@@@@@@@@@    @@@@@@@@@@@@@   @@@@@   @@@@@"
     echo -e "                                                                                                            @@@@       @@@@@@@@@@      @@@@@@@@@@@   @@@@@   @@@@@"
+    echo -e ""
     echo -e ""
 }
 
@@ -253,7 +255,8 @@ extract() {
 
 
 print_logo
-printf "Starting dotfiles setup"
+
+echo "Starting dotfiles setup ..."
 
 
 cd "$(dirname "${BASH_SOURCE[0]}")" \
