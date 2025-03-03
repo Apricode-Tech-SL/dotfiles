@@ -160,16 +160,16 @@ extract() {
 # ----------------------------------------------------------------------
 
 cd "$(dirname "${BASH_SOURCE[0]}")" \
-    || exit 1
+    || printf "  [✖] Error checking directory\n" && exit 1
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Load utils
 
 if [ -x "utils.sh" ]; then
-    . "utils.sh" || exit 1
+    . "utils.sh" || printf "  [✖] utils.sh not found\n" && exit 1
 else
-    download_utils || exit 1
+    download_utils || printf "  [✖] Error downloading utils.sh\n" && exit 1
 fi
 
 skip_questions "$@" \
