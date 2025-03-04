@@ -11,7 +11,7 @@ declare skipQuestions=false
 
 declare BLACK='\033[38;2;0;0;0m'       # Almost black
 declare ORANGE='\033[38;2;233;120;50m' # #E97832
-declare BLUE='\033[38;2;147;247;238m'  # #93F7EE
+declare BLUE='\033[38;2;97;165;183m'  # #93F7EE
 declare LIGHT_ORANGE='\033[38;2;240;169;90m' # #F0A95A
 declare LIGHT_BLUE='\033[38;2;147;247;238m'  # #93F7EE
 declare RESET='\033[0m'                      # Reset color to default
@@ -227,7 +227,7 @@ download_utils() {
     download "$DOTFILES_UTILS_URI" "$tmpFile" \
         && . "$tmpFile" \
         && rm -rf "$tmpFile" \
-        && echo -e "${LIGHT_ORANGE} Removed tmp file ${RESET}"
+        && echo -e "${LIGHT_ORANGE} Removed tmp file ${RESET}" \
         && return 0
 
    return 1
