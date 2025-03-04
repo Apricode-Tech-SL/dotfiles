@@ -9,14 +9,18 @@ declare -r DOTFILES_UTILS_URI="https://raw.githubusercontent.com/$GITHUB_REPOSIT
 declare dotfilesDirectory="$HOME/projects/dotfiles"
 declare skipQuestions=false
 
+# ----------------------------------------------------------------------
+# | Colours                                                             |
+# ----------------------------------------------------------------------
+
 declare BLACK='\033[38;2;0;0;0m'       # Almost black
 declare ORANGE='\033[38;2;233;120;50m' # #E97832
 declare BLUE='\033[38;2;97;165;183m'  # #93F7EE
 declare LIGHT_ORANGE='\033[38;2;240;169;90m' # #F0A95A
 declare LIGHT_BLUE='\033[38;2;147;247;238m'  # #93F7EE
 declare RED='\033[38;2;255;0;0m' # Red color
+declare GREEN='\033[38;2;0;255;0m' # Green color
 declare RESET='\033[0m'                      # Reset color to default
-
 
 
 
@@ -120,7 +124,6 @@ download() {
     local output="$2"
 
     if command -v "curl" &> /dev/null; then
-        echo -e "downloading with curl ${url}"
         curl \
             --location \
             --verbose \
@@ -132,7 +135,6 @@ download() {
         return $?
 
     elif command -v "wget" &> /dev/null; then
-        echo -e "downloading with wget ..."
         wget \
             --verbose \
             --output-document="$output" \
@@ -152,12 +154,12 @@ download_dotfiles() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    print_in_purple "\n • Download and extract archive\n\n"
+    print_in_purple "\n • Download and extract dotfiles archive\n\n"
 
     tmpFile="$(mktemp /tmp/XXXXX)"
 
     download "$DOTFILES_TARBALL_URI" "$tmpFile"
-    print_result $? "Download archive" "true"
+    print_result $? "Downloaded dotfiles archive" "true"
     printf "\n"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -225,17 +227,14 @@ download_utils() {
 
     tmpFile="$(mktemp /tmp/XXXXX)"
 
-    echo -e "${LIGHT_BLUE} creating ${tmpFile} from ${DOTFILES_UTILS_URI} ${RESET}"
     if download "$DOTFILES_UTILS_URI" "$tmpFile"; then
         . "$tmpFile"
         rm -rf "$tmpFile"
-        echo -e "  ${LIGHT_ORANGE}🗑️ Removed tmp file ${RESET}"
     else
         echo -e "${RED} [✖] Failed to download ${DOTFILES_UTILS_URI} ${RESET}"
         return 1
     fi
 
-    echo -e "${LIGHT_ORANGE} Returning 0"
     return 0
 }
 
@@ -267,7 +266,7 @@ print_logo
 
 echo -e "${ORANGE} -› Starting dotfiles setup ...${RESET}"
 
-cd "$(dirname "${BASH_SOURCE[0]}")" 
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -277,8 +276,10 @@ echo -e "${BLUE}   -› checking utils.sh ...${RESET}"
 if [ -x "utils.sh" ]; then
     . "utils.sh" || echo -e "${RED}  [✖] utils.sh not found ${RESET}\n" && exit 1
 else
-    download_utils || echo -e "${RED}  [✖] Error downloading utils.sh ${RESET}\n" && exit 1
-    echo -e "${BLUE} ✅ utils downloaded ${RESET}"
+  if ! download_utils; then
+    echo -e "${RED}  [✖] Error downloading utils.sh ${RESET}\n" && exit 1
+  fi
+    echo -e "${GREEN} [✓] utils.sh downloaded ${RESET}"
 fi
 
 echo -e "${BLUE}   -› skipping questions ...${RESET}"
@@ -286,7 +287,7 @@ skip_questions "$@" && skipQuestions=true
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-echo -e "${LIGHT_ORANGE}   -› Requiring privileges ...${RESET}"
+echo -e "${LIGHT_ORANGE}   -› [] Requiring privileges ...${RESET}"
 ask_for_sudo
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -296,11 +297,14 @@ ask_for_sudo
 # yet set up, and they will need to be downloaded.
 
 echo -e "${BLUE}   -› checking dotfiles project ...${RESET}"
-printf "%s" "${BASH_SOURCE[0]}" | grep "setup.sh" &> /dev/null
-    || download_dotfiles
+if printf "%s" "${BASH_SOURCE[0]}" | grep "logo.sh" &> /dev/null; then
+    echo -e "${GREEN}  [✓] dotfiles project exist, no need to download ${RESET}\n"
+else
+    download_dotfiles
+fi
 
-
-cd "$(dirname "${BASH_SOURCE[0]}")" && . "utils.sh"
+print_success "🚀 Dotfiles setup completed!\n"
+# show your current working directory
 
 ask_for_confirmation "During the installation you will be asked for your name and email to configure the GIT. Do you want to continue?"
 if ! answer_is_yes; then
@@ -323,6 +327,7 @@ print_in_purple "Your BitBucket's email is: $BITBUCKET_EMAIL" && printf "\n"
 
 # --- Install symlinks
 ./create_symlinks.sh "$@"
+exit 0
 
 # --- Create local config files
 ./create_local_config_files.sh $GIT_NAME $GITHUB_EMAIL
