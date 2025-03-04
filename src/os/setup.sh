@@ -9,17 +9,19 @@ declare -r DOTFILES_UTILS_URI="https://raw.githubusercontent.com/$GITHUB_REPOSIT
 declare dotfilesDirectory="$HOME/projects/dotfiles"
 declare skipQuestions=false
 
+declare BLACK='\033[38;2;0;0;0m'       # Almost black
+declare ORANGE='\033[38;2;233;120;50m' # #E97832
+declare BLUE='\033[38;2;147;247;238m'  # #93F7EE
+declare RESET='\033[0m'                # Reset to default terminal color
 
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
 # ----------------------------------------------------------------------
 
 print_logo() {
-    BLACK='\033[38;2;0;0;0m'       # Almost black
-    ORANGE='\033[38;2;233;120;50m' # #E97832
-    BLUE='\033[38;2;147;247;238m'  # #93F7EE
-    RESET='\033[0m'                # Reset to default terminal color
 
+
+    echo -e ""
     echo -e ""
     echo -e "${ORANGE}                                                                    @@@@@@@@@@@@@                      @@@@@"
     echo -e "                                                            @@@@@@@@@@@@@@@@@@@@@@@@@@               @@@@@@@@@"
@@ -253,11 +255,9 @@ extract() {
 # | Main                                                               |
 # ----------------------------------------------------------------------
 
-
 print_logo
 
-echo "Starting dotfiles setup ..."
-
+echo "${ORANGE} -› Starting dotfiles setup ...${RESET}"
 
 cd "$(dirname "${BASH_SOURCE[0]}")" \
     || printf "  [✖] Error checking directory\n" && exit 1
@@ -266,6 +266,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 
 # Load utils
 
+echo "${BLUE}   -› checking utils.sh ...${RESET}"
 if [ -x "utils.sh" ]; then
     . "utils.sh" || printf "  [✖] utils.sh not found\n" && exit 1
 else
@@ -285,6 +286,7 @@ ask_for_sudo
 # and if not, it most likely means that the dotfiles were not
 # yet set up, and they will need to be downloaded.
 
+echo "${BLUE}   -› checking dotfiles project ...${RESET}"
 printf "%s" "${BASH_SOURCE[0]}" | grep "setup.sh" &> /dev/null \
     || download_dotfiles
 
