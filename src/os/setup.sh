@@ -235,6 +235,7 @@ download_utils() {
         return 1
     fi
 
+    echo -e "${LIGHT_ORANGE} Returning 0"
     return 0
 }
 
