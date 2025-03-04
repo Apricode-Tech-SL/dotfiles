@@ -234,8 +234,6 @@ download_utils() {
         echo -e "${RED} [✖] Failed to download ${DOTFILES_UTILS_URI} ${RESET}"
         return 1
     fi
-
-    return 0
 }
 
 extract() {
