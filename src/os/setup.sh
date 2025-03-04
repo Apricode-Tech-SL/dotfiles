@@ -227,6 +227,7 @@ download_utils() {
     download "$DOTFILES_UTILS_URI" "$tmpFile" \
         && . "$tmpFile" \
         && rm -rf "$tmpFile" \
+        && echo -e "${LIGHT_ORANGE} Removed tmp file ${RESET}"
         && return 0
 
    return 1
@@ -275,10 +276,12 @@ else
     download_utils || printf "  [✖] Error downloading utils.sh\n" && exit 1
 fi
 
+echo -e "${BLUE}   -› skipping questions ...${RESET}"
 skip_questions "$@" && skipQuestions=true
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+echo -e "${LIGHT_ORANGE}   -› Requiring privileges ...${RESET}"
 ask_for_sudo
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
