@@ -118,9 +118,10 @@ download() {
     local output="$2"
 
     if command -v "curl" &> /dev/null; then
-        echo -e "downloading via curl ${url}"
+        echo -e "downloading with curl ${url}"
         curl \
             --location \
+            --verbose \
             --show-error \
             --output "$output" \
             "$url" \
@@ -129,8 +130,9 @@ download() {
         return $?
 
     elif command -v "wget" &> /dev/null; then
-        echo -e "downloading via wget ..."
+        echo -e "downloading with wget ..."
         wget \
+            --verbose \
             --output-document="$output" \
             "$url" \
                 &> /dev/null
