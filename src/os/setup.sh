@@ -235,7 +235,7 @@ download_utils() {
         return 1
     fi
 
-    return 0
+    return 1
 }
 
 extract() {
