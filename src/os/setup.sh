@@ -12,6 +12,10 @@ declare skipQuestions=false
 declare BLACK='\033[38;2;0;0;0m'       # Almost black
 declare ORANGE='\033[38;2;233;120;50m' # #E97832
 declare BLUE='\033[38;2;147;247;238m'  # #93F7EE
+declare LIGHT_ORANGE='\033[38;2;240;169;90m' # #F0A95A
+declare LIGHT_BLUE='\033[38;2;147;247;238m'  # #93F7EE
+RESET='\033[0m'                      # Reset color to default
+
 declare RESET='\033[0m'                # Reset to default terminal color
 
 # ----------------------------------------------------------------------
@@ -220,6 +224,7 @@ download_utils() {
 
     tmpFile="$(mktemp /tmp/XXXXX)"
 
+    echo -e "${LIGHT_BLUE} creating ${tmpFile} from ${DOTFILES_UTILS_URL} ${RESET}"
     download "$DOTFILES_UTILS_URL" "$tmpFile" \
         && . "$tmpFile" \
         && rm -rf "$tmpFile" \
