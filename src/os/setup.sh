@@ -258,8 +258,7 @@ print_logo
 
 echo -e "${ORANGE} -› Starting dotfiles setup ...${RESET}"
 
-cd "$(dirname "${BASH_SOURCE[0]}")" \
-    || printf "  [✖] Error checking directory\n" && exit 1
+cd "$(dirname "${BASH_SOURCE[0]}")" 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -272,8 +271,7 @@ else
     download_utils || printf "  [✖] Error downloading utils.sh\n" && exit 1
 fi
 
-skip_questions "$@" \
-        && skipQuestions=true
+skip_questions "$@" && skipQuestions=true
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -285,13 +283,12 @@ ask_for_sudo
 # and if not, it most likely means that the dotfiles were not
 # yet set up, and they will need to be downloaded.
 
-echo "${BLUE}   -› checking dotfiles project ...${RESET}"
-printf "%s" "${BASH_SOURCE[0]}" | grep "setup.sh" &> /dev/null \
+echo -e "${BLUE}   -› checking dotfiles project ...${RESET}"
+printf "%s" "${BASH_SOURCE[0]}" | grep "setup.sh" &> /dev/null
     || download_dotfiles
 
 
-cd "$(dirname "${BASH_SOURCE[0]}")" \
-    && . "utils.sh"
+cd "$(dirname "${BASH_SOURCE[0]}")" && . "utils.sh"
 
 ask_for_confirmation "During the installation you will be asked for your name and email to configure the GIT. Do you want to continue?"
 if ! answer_is_yes; then
