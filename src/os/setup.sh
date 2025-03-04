@@ -154,7 +154,7 @@ download_dotfiles() {
 
     tmpFile="$(mktemp /tmp/XXXXX)"
 
-    download "$DOTFILES_TARBALL_URL" "$tmpFile"
+    download "$DOTFILES_TARBALL_URI" "$tmpFile"
     print_result $? "Download archive" "true"
     printf "\n"
 
@@ -224,8 +224,8 @@ download_utils() {
 
     tmpFile="$(mktemp /tmp/XXXXX)"
 
-    echo -e "${LIGHT_BLUE} creating ${tmpFile} from ${DOTFILES_UTILS_URL} ${RESET}"
-    download "$DOTFILES_UTILS_URL" "$tmpFile" \
+    echo -e "${LIGHT_BLUE} creating ${tmpFile} from ${DOTFILES_UTILS_URI} ${RESET}"
+    download "$DOTFILES_UTILS_URI" "$tmpFile" \
         && . "$tmpFile" \
         && rm -rf "$tmpFile" \
         && return 0
