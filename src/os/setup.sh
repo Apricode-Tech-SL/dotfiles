@@ -4,7 +4,7 @@
 declare -r GITHUB_REPOSITORY="Apricode-Tech-SL/dotfiles"
 declare -r DOTFILES_ORIGIN="git@github.com:$GITHUB_REPOSITORY.git"
 declare -r DOTFILES_TARBALL_URI="https://github.com/$GITHUB_REPOSITORY/tarball/main"
-declare -r DOTFILES_UTILS_URI="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/os/utils.sh"
+declare -r DOTFILES_UTILS_URI="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/refs/heads/main/src/os/utils.sh"
 
 declare dotfilesDirectory="$HOME/projects/dotfiles"
 declare skipQuestions=false
