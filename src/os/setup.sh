@@ -235,7 +235,7 @@ download_utils() {
         return 1
     fi
 
-    return 1
+    return 0
 }
 
 extract() {
@@ -274,9 +274,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 echo -e "${BLUE}   -› checking utils.sh ...${RESET}"
 if [ -x "utils.sh" ]; then
-    . "utils.sh" || printf "  [✖] utils.sh not found\n" && exit 1
+    . "utils.sh" || echo -e "${RED}  [✖] utils.sh not found ${RESET}\n" && exit 1
 else
-    download_utils || printf "  [✖] Error downloading utils.sh\n" && exit 1
+    download_utils || echo -e "${RED}  [✖] Error downloading utils.sh ${RESET}\n" && exit 1
 fi
 
 echo -e "${BLUE}   -› skipping questions ...${RESET}"
