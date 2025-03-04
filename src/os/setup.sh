@@ -234,6 +234,8 @@ download_utils() {
         echo -e "${RED} [✖] Failed to download ${DOTFILES_UTILS_URI} ${RESET}"
         return 1
     fi
+
+    return 0
 }
 
 extract() {
@@ -275,6 +277,7 @@ if [ -x "utils.sh" ]; then
     . "utils.sh" || echo -e "${RED}  [✖] utils.sh not found ${RESET}\n" && exit 1
 else
     download_utils || echo -e "${RED}  [✖] Error downloading utils.sh ${RESET}\n" && exit 1
+    echo -e "${BLUE} ✅ utils downloaded ${RESET}"
 fi
 
 echo -e "${BLUE}   -› skipping questions ...${RESET}"
