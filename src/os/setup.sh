@@ -127,7 +127,7 @@ download() {
             "$url" \
                 &> /dev/null
 
-        exit $?
+        return $?
 
     elif command -v "wget" &> /dev/null; then
         echo -e "downloading with wget ..."
@@ -137,10 +137,10 @@ download() {
             "$url" \
                 &> /dev/null
 
-        exit $?
+        return $?
     fi
 
-    exit 1
+    return 1
 
 }
 
@@ -227,11 +227,9 @@ download_utils() {
     download "$DOTFILES_UTILS_URI" "$tmpFile" \
         && . "$tmpFile" \
         && rm -rf "$tmpFile" \
-        && echo -e "${LIGHT_ORANGE} Removed tmp file ${RESET}" \
-        && exit 0
+        && echo -e "${LIGHT_ORANGE} Removed tmp file ${RESET}"
 
-   exit 1
-
+   return 0
 }
 
 extract() {
@@ -248,11 +246,10 @@ extract() {
             --strip-components 1 \
             --directory "$outputDir"
 
-        exit $?
+        return $?
     fi
 
-    exit 1
-
+    return 1
 }
 
 # ----------------------------------------------------------------------
