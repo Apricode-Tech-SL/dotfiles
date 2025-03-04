@@ -14,7 +14,7 @@ declare ORANGE='\033[38;2;233;120;50m' # #E97832
 declare BLUE='\033[38;2;147;247;238m'  # #93F7EE
 declare LIGHT_ORANGE='\033[38;2;240;169;90m' # #F0A95A
 declare LIGHT_BLUE='\033[38;2;147;247;238m'  # #93F7EE
-RESET='\033[0m'                      # Reset color to default
+declare RESET='\033[0m'                      # Reset color to default
 
 declare RESET='\033[0m'                # Reset to default terminal color
 
@@ -173,7 +173,6 @@ download_dotfiles() {
         fi
 
         # Ensure the `dotfiles` directory is available
-
         while [ -e "$dotfilesDirectory" ]; do
             ask_for_confirmation "'$dotfilesDirectory' already exists, do you want to overwrite it?"
             if answer_is_yes; then
