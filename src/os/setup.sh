@@ -20,7 +20,6 @@ declare RESET='\033[0m'                # Reset to default terminal color
 
 print_logo() {
 
-
     echo -e ""
     echo -e ""
     echo -e "${ORANGE}                                                                    @@@@@@@@@@@@@                      @@@@@"
@@ -257,7 +256,7 @@ extract() {
 
 print_logo
 
-echo "${ORANGE} -› Starting dotfiles setup ...${RESET}"
+echo -e "${ORANGE} -› Starting dotfiles setup ...${RESET}"
 
 cd "$(dirname "${BASH_SOURCE[0]}")" \
     || printf "  [✖] Error checking directory\n" && exit 1
@@ -266,7 +265,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 
 # Load utils
 
-echo "${BLUE}   -› checking utils.sh ...${RESET}"
+echo -e "${BLUE}   -› checking utils.sh ...${RESET}"
 if [ -x "utils.sh" ]; then
     . "utils.sh" || printf "  [✖] utils.sh not found\n" && exit 1
 else
