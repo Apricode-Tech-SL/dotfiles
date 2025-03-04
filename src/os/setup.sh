@@ -14,9 +14,11 @@ declare ORANGE='\033[38;2;233;120;50m' # #E97832
 declare BLUE='\033[38;2;97;165;183m'  # #93F7EE
 declare LIGHT_ORANGE='\033[38;2;240;169;90m' # #F0A95A
 declare LIGHT_BLUE='\033[38;2;147;247;238m'  # #93F7EE
+declare RED='\033[38;2;255;0;0m' # Red color
 declare RESET='\033[0m'                      # Reset color to default
 
-declare RESET='\033[0m'                # Reset to default terminal color
+
+
 
 # ----------------------------------------------------------------------
 # | Helper Functions                                                   |
@@ -224,12 +226,16 @@ download_utils() {
     tmpFile="$(mktemp /tmp/XXXXX)"
 
     echo -e "${LIGHT_BLUE} creating ${tmpFile} from ${DOTFILES_UTILS_URI} ${RESET}"
-    download "$DOTFILES_UTILS_URI" "$tmpFile" \
-        && . "$tmpFile" \
-        && rm -rf "$tmpFile" \
-        && echo -e "${LIGHT_ORANGE} Removed tmp file ${RESET}"
+    if download "$DOTFILES_UTILS_URI" "$tmpFile"; then
+        . "$tmpFile"
+        rm -rf "$tmpFile"
+        echo -e "  ${LIGHT_ORANGE}🗑️ Removed tmp file ${RESET}"
+    else
+        echo -e "${RED} [✖] Failed to download ${DOTFILES_UTILS_URI} ${RESET}"
+        return 1
+    fi
 
-   return 0
+    return 0
 }
 
 extract() {
