@@ -5,7 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create_symlinks() {
+create_config_files() {
 
     declare -a FILES_TO_SYMLINK=(
         "shell/zshrc"
@@ -34,7 +34,7 @@ create_symlinks() {
         if [ ! -e "$targetFile" ] || $skipQuestions; then
 
             execute \
-                "cp $sourceFile $targetFile" \
+                "cp -iv $sourceFile $targetFile" \
                 "$targetFile → $sourceFile"
 
         elif [ "$(readlink "$targetFile")" == "$sourceFile" ]; then
@@ -49,7 +49,7 @@ create_symlinks() {
                     rm -rf "$targetFile"
 
                     execute \
-                        "cp $sourceFile $targetFile" \
+                        "cp -iv $sourceFile $targetFile" \
                         "$targetFile → $sourceFile"
 
                 else
@@ -67,8 +67,8 @@ create_symlinks() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 main() {
-    print_in_purple "\n • Create symbolic links\n\n"
-    create_symlinks "$@"
+    print_in_purple "\n • Create config files\n\n"
+    create_config_files "$@"
 }
 
 main "$@"

@@ -330,11 +330,11 @@ find . -name "*.sh" -exec chmod +x {} \;
 
 # --- Move templates of config files to home directory
 ./create_config_files.sh "$@"
-exit 0
 
 # --- Create local config files
 ./create_local_config_files.sh $GIT_NAME $GITHUB_EMAIL
 
+exit 0
 # --- Install apps
 ./apps/install.sh
 
