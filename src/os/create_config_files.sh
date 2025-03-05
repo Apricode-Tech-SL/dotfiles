@@ -30,7 +30,6 @@ create_config_files() {
         sourceFile="$(cd .. && pwd)/$i"
         targetFile="$HOME/.$(printf "%s" "$i" | sed "s/.*\/\(.*\)/\1/g")"
         echo $sourceFile
-        exit 1
         if [ ! -e "$targetFile" ] || $skipQuestions; then
 
             execute \
