@@ -334,7 +334,6 @@ find . -name "*.sh" -exec chmod +x {} \;
 # --- Create local config files
 ./create_local_config_files.sh $GIT_NAME $GITHUB_EMAIL
 
-exit 0
 # --- Install apps
 ./apps/install.sh
 
@@ -352,7 +351,6 @@ brew update
 
 # --- Create ssh key
 ./set_github_ssh_key.sh $GIT_NAME $GITHUB_EMAIL
-#./set_bitbucket_ssh_key.sh $GIT_NAME $BITBUCKET_EMAIL
-
+./set_bitbucket_ssh_key.sh $GIT_NAME $BITBUCKET_EMAIL
 
 print_success "🚀 macOS setup completed!"
