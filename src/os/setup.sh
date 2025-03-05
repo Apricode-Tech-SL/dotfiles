@@ -325,6 +325,9 @@ print_in_purple "Your name is: $GIT_NAME" && printf "\n"
 print_in_purple "Your GitHub's email is: $GITHUB_EMAIL" && printf "\n"
 print_in_purple "Your BitBucket's email is: $BITBUCKET_EMAIL" && printf "\n"
 
+# Ensure .sh files are executable ...
+find . -name "*.sh" -exec chmod +x {} \;
+
 # --- Move templates of config files to home directory
 ./create_config_files.sh "$@"
 exit 0
