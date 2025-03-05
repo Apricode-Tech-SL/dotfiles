@@ -122,6 +122,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias cd..="cd .."
+alias tmp="cd /tmp"
 
 alias cp="cp -iv"
 #             │└─ list copied files
