@@ -44,11 +44,35 @@ CASK_PACKAGES=(
     ghostty
 )
 
-echo "Installing brew packages..."
-brew install "${BREW_PACKAGES[@]}"
+install_brew_package() {
+    echo "Installing $1..."
+    if brew install "$1" &>/dev/null; then
+        print_succes "Installed $1"
+    else
+        print_error "⚠️ Failed to install $1. It might be already installed or there was an error."
+    fi
+}
 
+# Function to install cask packages with error handling
+install_cask_package() {
+    echo "Installing $1..."
+    if brew install --cask "$1" &>/dev/null; then
+        print_succes "Installed $1"
+    else
+        print_error "⚠️ Failed to install $1. It might be already installed or there was an error."
+    fi
+}
+
+echo "Installing brew packages..."
+for package in "${BREW_PACKAGES[@]}"; do
+    install_brew_package "$package"
+done
+
+# Install cask packages
 echo "Installing cask packages..."
-brew install --cask "${CASK_PACKAGES[@]}"
+for package in "${CASK_PACKAGES[@]}"; do
+    install_cask_package "$package"
+done
 
 # Install Oh My Zsh
 echo "Installing Oh My Zsh..."
