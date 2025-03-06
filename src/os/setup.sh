@@ -328,14 +328,9 @@ print_in_purple "Your BitBucket's email is: $BITBUCKET_EMAIL" && printf "\n"
 # Ensure .sh files are executable ...
 find . -name "*.sh" -exec chmod +x {} \;
 
-# --- Move templates of config files to home directory
-./create_config_files.sh "$@"
 
 # --- Create local config files
 ./create_local_config_files.sh $GIT_NAME $GITHUB_EMAIL
-
-# --- Install apps
-./apps/install.sh
 
 # Ensure Homebrew is installed
 if ! cmd_exists "brew"; then
@@ -345,6 +340,12 @@ fi
 
 print_in_purple "• Updating Homebrew...\n\n"
 brew update
+
+# --- Install apps
+./apps/install.sh
+
+# --- Move templates of config files to home directory
+./create_config_files.sh "$@"
 
 # --- MacOSX preferences
 ./preferences/main.sh

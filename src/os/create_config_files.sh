@@ -9,6 +9,7 @@ create_config_files() {
 
     declare -a FILES_TO_SYMLINK=(
         "shell/zshrc"
+        "shell/p10k.zsh"
         "git/gitconfig"
         "git/gitignore"
     )
