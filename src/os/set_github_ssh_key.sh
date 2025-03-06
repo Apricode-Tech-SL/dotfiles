@@ -36,8 +36,8 @@ copy_public_ssh_key_to_clipboard () {
 
 generate_ssh_keys() {
 
-    print_in_purple "Generating ssh key for $(GITHUB_EMAIL):" && printf " \n"
-    ssh-keygen -t rsa -b ed25519 -C "$(GITHUB_EMAIL)" -f "$1"
+    print_in_purple "Generating ssh key for ${GITHUB_EMAIL}:" && printf " \n"
+    ssh-keygen -t ed25519 -C "${GITHUB_EMAIL}" -f "$1"
 
     print_result $? "Generate SSH keys"
 
@@ -75,18 +75,29 @@ set_github_ssh_key() {
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    generate_ssh_keys "$sshKeyFileName"
-    add_ssh_configs "$sshKeyFileName"
+    # if we cannot generate_ssh_keys, we cannot continue
+    if ! generate_ssh_keys "$sshKeyFileName"; then
+        print_error "SSH key generation failed"
+        exit 1
+    fi
+
+    if ! add_ssh_configs "$sshKeyFileName"; then
+        print_error "SSH config failed"
+        exit 1
+    fi
+
+
     copy_public_ssh_key_to_clipboard "${sshKeyFileName}.pub"
-    eval $(ssh-agent)
+    # Start the ssh-agent in the background and continue script
+    eval $(ssh-agent) \
+        &&
+
     open_github_ssh_page
-    test_ssh_connection \
-        && rm "${sshKeyFileName}.pub"
+    test_ssh_connection
 
 }
 
 test_ssh_connection() {
-
     while true; do
 
         ssh -T git@github.com &> /dev/null
@@ -102,12 +113,14 @@ test_ssh_connection() {
 
 main() {
 
-    print_in_purple "\n • Set up GitHub SSH keys\n\n"
+    GITHUB_EMAIL=$1
+
+    print_in_purple "\n • Set up GitHub SSH keys for ${GITHUB_EMAIL}\n\n"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    if ! is_git_repository; then
-        print_error "Not a Git repository"
+    if [ -z "$GITHUB_EMAIL" ]; then
+        print_error "Please provide an email address as a parameter"
         exit 1
     fi
 
@@ -125,4 +138,4 @@ main() {
 
 }
 
-main
+main "$@"

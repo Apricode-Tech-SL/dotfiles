@@ -33,6 +33,7 @@ CASK_PACKAGES=(
     # images
     gimp
     inkscape
+    miro
 
     # tools
     docker
@@ -41,6 +42,7 @@ CASK_PACKAGES=(
 
     # terminals
     warp
+    ghostty
 )
 
 echo "Installing brew packages..."

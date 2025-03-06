@@ -350,7 +350,7 @@ brew update
 ./preferences/main.sh
 
 # --- Create ssh key
-./set_github_ssh_key.sh $GIT_NAME $GITHUB_EMAIL
-./set_bitbucket_ssh_key.sh $GIT_NAME $BITBUCKET_EMAIL
+./set_github_ssh_key.sh $GITHUB_EMAIL
+./set_bitbucket_ssh_key.sh $BITBUCKET_EMAIL
 
 print_success "🚀 macOS setup completed!"
