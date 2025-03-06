@@ -16,7 +16,6 @@ BREW_PACKAGES=(
 CASK_PACKAGES=(
     # IDEs
     visual-studio-code
-    visual-studio
     jetbrains-toolbox
     intellij-idea-ce
     webstorm
@@ -55,13 +54,13 @@ brew install --cask "${CASK_PACKAGES[@]}"
 echo "Installing Oh My Zsh..."
 RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
 
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
 # Ensure Oh My Zsh is fully installed before proceeding
 OMZ_DIR="$HOME/.oh-my-zsh"
 while [ ! -d "$OMZ_DIR" ]; do
     echo "Waiting for Oh My Zsh installation to complete..."
-    sleep 2
+    sleep 5
 done
-
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
 source "$ZSHRC"
