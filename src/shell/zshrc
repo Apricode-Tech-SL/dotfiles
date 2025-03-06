@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,3 +112,81 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+_display_message() {
+  dirtomove=$(ls | fzf)
+  cd "$dirtomove"
+}
+
+zle         -N    _display_message
+bindkey  '^h'  _display_message
+
+_reverse_search() {
+  local selected_command=$(fc -rl 1 | awk '{$1="";print substr($0,2)}' | fzf)
+  LBUFFER=$selected_command
+}
+
+zle -N _reverse_search
+bindkey '^r' _reverse_search
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias cd..="cd .."
+alias tmp="cd /tmp"
+
+alias cp="cp -iv"
+#             │└─ list copied files
+#             └─ prompt before overwriting an existing file
+
+alias mkdir="mkdir -pv"
+#                   │└─ list created directories
+#                   └─ create intermediate directories
+
+alias mv="mv -iv"
+#             │└─ list moved files
+#             └─ prompt before overwriting an existing file
+
+alias rm="rm -rf --"
+alias qu="exit"
+alias c="clear"
+alias g="git"
+
+# macosx specific
+
+alias o="open"
+
+# Lock screen.
+
+alias afk="osascript -e 'tell application \"System Events\" to sleep'"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Shorter commands for `Homebrew`.
+
+alias brewd="brew doctor"
+alias brewi="brew install"
+alias brewr="brew uninstall"
+alias brews="brew search"
+alias brewu="brew update --quiet \
+                && brew upgrade \
+                && brew cleanup"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Clear DNS cache.
+
+alias clear-dns-cache="sudo dscacheutil -flushcache; \
+                       sudo killall -HUP mDNSResponder"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Empty the trash, the main HDD and on all mounted volumes,
+# and clear Apple’s system logs to improve shell startup speed.
+
+alias empty-trash="sudo rm -frv /Volumes/*/.Trashes; \
+                   sudo rm -frv ~/.Trash; \
+                   sudo rm -frv /private/var/log/asl/*.asl; \
+                   sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
