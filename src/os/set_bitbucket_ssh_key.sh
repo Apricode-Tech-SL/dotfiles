@@ -8,12 +8,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")" \
 add_ssh_configs() {
 
     printf "%s\n" \
-        "Host bitbucket.org-${BITBUCKET_USERNAME}" \
-        "  HostName bitbucket.org" \
-        "  User git" \
-        "  IdentityFile $1" \
-        "  IdentitiesOnly yes" \
-        "  LogLevel ERROR" >> ~/.ssh/config
+        "Host bitbucket.org" \
+        "  AddKeysToAgent yes" \
+        "  IdentityFile $1" >> ~/.ssh/config
 
     print_result $? "Add SSH configs"
 
@@ -39,8 +36,8 @@ copy_public_ssh_key_to_clipboard () {
 
 generate_ssh_keys() {
 
-    print_in_purple "Generating ssh key for $(BITBUCKET_EMAIL):" && printf " \n"
-    ssh-keygen -t rsa -b ed25519 -C "$(BITBUCKET_EMAIL)" -f "$1"
+    print_in_purple "Generating ssh key for ${BITBUCKET_EMAIL}:" && printf " \n"
+    ssh-keygen -t ed25519 -b 4096 -C "${BITBUCKET_EMAIL}" -f "$1"
 
     print_result $? "Generate SSH keys"
 
@@ -49,7 +46,7 @@ generate_ssh_keys() {
 open_bitbucket_ssh_page() {
 
     declare -r BITBUCKET_SSH_URL="https://bitbucket.org/account/settings/ssh-keys/"
-
+    print_warning "Opening BitBucket SSH page..."
     # The order of the following checks matters
     # as on Ubuntu there is also a utility called `open`.
 
@@ -65,7 +62,7 @@ open_bitbucket_ssh_page() {
 
 set_bitbucket_ssh_key() {
 
-    local sshKeyFileName="$HOME/.ssh/github"
+    local sshKeyFileName="$HOME/.ssh/bitbucket"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -73,7 +70,7 @@ set_bitbucket_ssh_key() {
     # name, generate another, unique, file name.
 
     if [ -f "$sshKeyFileName" ]; then
-        sshKeyFileName="$(mktemp -u "$HOME/.ssh/github_XXXXX")"
+        sshKeyFileName="$(mktemp -u "$HOME/.ssh/bitbucket_XXXXX")"
     fi
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,23 +78,36 @@ set_bitbucket_ssh_key() {
     generate_ssh_keys "$sshKeyFileName"
     add_ssh_configs "$sshKeyFileName"
     copy_public_ssh_key_to_clipboard "${sshKeyFileName}.pub"
-    eval $(ssh-agent)
+    # Start the ssh-agent in the background and continue script
+    eval $(ssh-agent) \
+        &&
+
     open_bitbucket_ssh_page
-    test_ssh_connection \
-        && rm "${sshKeyFileName}.pub"
+    test_ssh_connection
 
 }
 
 test_ssh_connection() {
 
-    while true; do
+    local timeout=60  # Timeout in seconds
+    local interval=5  # Interval between checks in seconds
+    local elapsed=0
 
-        ssh -T git@github.com &> /dev/null
-        [ $? -eq 1 ] && break
+    while [ $elapsed -lt $timeout ]; do
 
-        sleep 5
+        output=$(ssh -T git@bitbucket.org 2>&1)
+        if [[ $output == *"authenticated via ssh key"* ]]; then
+            print_result 0 "SSH connection to BitBucket successful"
+            return 0
+        fi
+
+        sleep $interval
+        elapsed=$((elapsed + interval))
 
     done
+
+    print_error "SSH connection to BitBucket timed out"
+    return 1
 
 }
 
@@ -105,22 +115,14 @@ test_ssh_connection() {
 
 main() {
 
+    BITBUCKET_EMAIL=$1
+
     if [ -z "$BITBUCKET_EMAIL" ]; then
         print_error "Please set the BITBUCKET_EMAIL"
         exit 1
     fi
 
-    # Get username from email address
-    BITBUCKET_USERNAME=$(echo $BITBUCKET_EMAIL | cut -d "@" -f 1)
-
-    print_in_purple "\n • Set up BitBucket SSH keys\n\n"
-
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    if ! is_git_repository; then
-        print_error "Not a Git repository"
-        exit 1
-    fi
+    print_in_purple "\n • Set up BitBucket SSH keys for ${BITBUCKET_EMAIL}\n\n"
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -137,4 +139,4 @@ main() {
 
 }
 
-main
+main "$@"
