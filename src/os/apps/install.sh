@@ -28,6 +28,8 @@ CASK_PACKAGES=(
     # browsers
     firefox
     google-chrome
+    brave-browser
+    arc
 
     # images
     gimp
@@ -38,6 +40,7 @@ CASK_PACKAGES=(
     docker
     obsidian
     onyx
+    microsoft-teams
 
     # terminals
     warp
