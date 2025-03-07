@@ -1,9 +1,11 @@
 #!/bin/bash
 
+declare -r NODE_VERSION="20.13.1"
+
 # Install packages
 BREW_PACKAGES=(
     coreutils
-    docker-completion
+    docker-compose
     fnm
     htop
     jq
@@ -90,3 +92,6 @@ if [ "$SHELL" != "$(which zsh)" ]; then
   chsh -s "$(which zsh)"
   print_success "Set Zsh as the default shell"
 fi
+
+fnm install $NODE_VERSION
+fnm default $NODE_VERSION
