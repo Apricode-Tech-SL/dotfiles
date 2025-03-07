@@ -7,7 +7,7 @@ This is a generic dotfiles repository to speed up the setup configuration of you
 - [ ] Your apricodetech.com account created with access to Apricode team in GitHub
 - [ ] Your Atlassian account created and access to BitBucket
 
-> [!INFO]
+> [!NOTE]
 > The setup is not unattended, you will be required to confirm certain steps and require sudo privileges for installing apps
 
 ## Setup
