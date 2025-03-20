@@ -4,6 +4,7 @@ declare -r NODE_VERSION="20.13.1"
 
 # Install packages
 BREW_PACKAGES=(
+    cloudfoundry-cli
     coreutils
     docker-compose
     fnm
