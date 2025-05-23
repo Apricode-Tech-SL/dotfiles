@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -r NODE_VERSION="20.13.1"
+declare -r NODE_VERSION="22.14.0"
 
 # Install packages
 BREW_PACKAGES=(
